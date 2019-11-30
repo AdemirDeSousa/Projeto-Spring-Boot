@@ -13,6 +13,7 @@ import com.iau.projeto.domain.Cidade;
 import com.iau.projeto.domain.Cliente;
 import com.iau.projeto.domain.Endereco;
 import com.iau.projeto.domain.Estado;
+import com.iau.projeto.domain.ItemPedido;
 import com.iau.projeto.domain.Pagamento;
 import com.iau.projeto.domain.PagamentoComBoleto;
 import com.iau.projeto.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.iau.projeto.repositories.CidadeRepository;
 import com.iau.projeto.repositories.ClienteRepository;
 import com.iau.projeto.repositories.EnderecoRepository;
 import com.iau.projeto.repositories.EstadoRepository;
+import com.iau.projeto.repositories.ItemPedidoRepository;
 import com.iau.projeto.repositories.PagamentoRepository;
 import com.iau.projeto.repositories.PedidoRepository;
 import com.iau.projeto.repositories.ProdutoRepository;
@@ -56,6 +58,10 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamento_repository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedido_repository;
+	
 	
 	
 	public static void main(String[] args) {
@@ -104,6 +110,11 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		Pagamento pagamento_2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido_2, sdf.parse("20/10/2017 00:00"), null);
 		pedido_2.setPagamento(pagamento_2);
 		
+		//Objeto ItemPedido
+		ItemPedido ip_1 = new ItemPedido(pedido_1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip_2 = new ItemPedido(pedido_1, p3, 0.00, 2, 80.00);
+		ItemPedido ip_3 = new ItemPedido(pedido_2, p2, 100.00, 1, 800.00);
+		
 		//Associaçao
 		cat_1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		cat_2.getProdutos().addAll(Arrays.asList(p2));
@@ -118,6 +129,12 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		cliente_1.getEnderecos().addAll(Arrays.asList(e1, e2));
 		cliente_1.getPedidos().addAll(Arrays.asList(pedido_1, pedido_2));
 		
+		pedido_1.getItens().addAll(Arrays.asList(ip_1, ip_2));
+		pedido_2.getItens().addAll(Arrays.asList(ip_3));
+		
+		p1.getItens().addAll(Arrays.asList(ip_1));
+		p2.getItens().addAll(Arrays.asList(ip_3));
+		p3.getItens().addAll(Arrays.asList(ip_2));
 		
 		//Salvar objetos no banco de dados
 		categoria_repository.saveAll(Arrays.asList(cat_1, cat_2));
@@ -128,6 +145,7 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		endereco_repository.saveAll(Arrays.asList(e1, e2));
 		pedido_repository.saveAll(Arrays.asList(pedido_1, pedido_2));
 		pagamento_repository.saveAll(Arrays.asList(pagamento_1, pagamento_2));
+		itemPedido_repository.saveAll(Arrays.asList(ip_1, ip_2, ip_3));
 		
 	}
 

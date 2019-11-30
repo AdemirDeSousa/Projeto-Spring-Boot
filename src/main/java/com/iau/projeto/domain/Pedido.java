@@ -2,6 +2,8 @@ package com.iau.projeto.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,6 +40,9 @@ public class Pedido implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco_entrega;
+	
+	@OneToMany(mappedBy = "id.pedido")
+	private Set<ItemPedido> itens = new HashSet<>();
 	
 	//Construtor Vazio----------------------------------------------------------------
 	public Pedido() {
@@ -93,6 +99,13 @@ public class Pedido implements Serializable{
 		this.endereco_entrega = endereco_entrega;
 	}
 	
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
 	//HashCode------------------------------------------------------------------------
 	@Override
 	public int hashCode() {
@@ -119,6 +132,8 @@ public class Pedido implements Serializable{
 			return false;
 		return true;
 	}
+
+
 	
 	
 	

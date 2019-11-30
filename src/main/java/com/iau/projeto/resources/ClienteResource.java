@@ -19,12 +19,12 @@ public class ClienteResource {
 	
 	//Objeto ClienteService + Instancia
 	@Autowired
-	private ClienteService categoria_service;
+	private ClienteService cliente_service;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> Find(@PathVariable Integer id) {
 		
-		Cliente obj = categoria_service.Find(id);
+		Cliente obj = cliente_service.Find(id);
 		
 		return ResponseEntity.ok().body(obj);
 		
