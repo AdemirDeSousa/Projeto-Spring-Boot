@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.iau.projeto.domain.enums.EstadoPagamento;
 
 @Entity
@@ -14,9 +15,11 @@ public class PagamentoComBoleto extends Pagamento{
 	
 	//Atributos-----------------------------------------------------------------------
 	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date data_vencimento;
 	
 	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date data_pagamento;
 	
 	//Construtor Vazio----------------------------------------------------------------
