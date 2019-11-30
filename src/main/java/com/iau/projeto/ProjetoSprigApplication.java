@@ -9,17 +9,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.iau.projeto.domain.Categoria;
 import com.iau.projeto.domain.Cidade;
+import com.iau.projeto.domain.Cliente;
+import com.iau.projeto.domain.Endereco;
 import com.iau.projeto.domain.Estado;
 import com.iau.projeto.domain.Produto;
+import com.iau.projeto.domain.enums.TipoCliente;
 import com.iau.projeto.repositories.CategoriaRepository;
 import com.iau.projeto.repositories.CidadeRepository;
+import com.iau.projeto.repositories.ClienteRepository;
+import com.iau.projeto.repositories.EnderecoRepository;
 import com.iau.projeto.repositories.EstadoRepository;
 import com.iau.projeto.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class ProjetoSprigApplication implements CommandLineRunner{
 	
-	//Dependencia
+	//Dependencias
 	@Autowired
 	private CategoriaRepository categoria_repository;
 	
@@ -31,6 +36,12 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 	
 	@Autowired
 	private CidadeRepository cidade_repository;
+	
+	@Autowired
+	private ClienteRepository cliente_repository;
+	
+	@Autowired
+	private EnderecoRepository endereco_repository;
 	
 	
 	public static void main(String[] args) {
@@ -58,6 +69,14 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		Cidade c2 = new Cidade(null, "Sao Paulo", estado_2);
 		Cidade c3 = new Cidade(null, "Campinas", estado_2);
 		
+		//Objetos Cliente
+		Cliente cliente_1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "11111111111", TipoCliente.PESSOAFISICA);
+		cliente_1.getTelefones().addAll(Arrays.asList("999999999", "988888888"));
+		
+		//Objeto Endereço
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "58036460", cliente_1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "58036510", cliente_1, c2);
+		
 		//Associaçao
 		cat_1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		cat_2.getProdutos().addAll(Arrays.asList(p2));
@@ -69,11 +88,15 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		estado_1.getCidades().addAll(Arrays.asList(c1));
 		estado_2.getCidades().addAll(Arrays.asList(c2, c3));
 		
+		cliente_1.getEnderecos().addAll(Arrays.asList(e1, e2));	
+		
 		//Salvar objetos no banco de dados
 		categoria_repository.saveAll(Arrays.asList(cat_1, cat_2));
 		produto_repository.saveAll(Arrays.asList(p1, p2, p3));
 		estado_repository.saveAll(Arrays.asList(estado_1, estado_2));
 		cidade_repository.saveAll(Arrays.asList(c1, c2, c3));
+		cliente_repository.saveAll(Arrays.asList(cliente_1));
+		endereco_repository.saveAll(Arrays.asList(e1, e2));
 	}
 
 }
