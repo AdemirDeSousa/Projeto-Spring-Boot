@@ -18,16 +18,21 @@ public class CategoriaService {
 	private CategoriaRepository categoria_repository;
 	
 	//Metodo Buscas
-	public Categoria Find(Integer id) {
+	public Categoria find(Integer id) {
 		Optional<Categoria> obj = categoria_repository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 		}
 	
-	//Funçao Inserir
+	//Metodo Inserir
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);
 		return categoria_repository.save(obj);
 	}
 	
+	//Metodo 
+	public Categoria update(Categoria obj) {
+		find(obj.getId());
+		return categoria_repository.save(obj);
+	}
 }
