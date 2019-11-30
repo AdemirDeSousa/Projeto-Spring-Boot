@@ -1,5 +1,6 @@
 package com.iau.projeto;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.iau.projeto.domain.Cidade;
 import com.iau.projeto.domain.Cliente;
 import com.iau.projeto.domain.Endereco;
 import com.iau.projeto.domain.Estado;
+import com.iau.projeto.domain.Pagamento;
+import com.iau.projeto.domain.PagamentoComBoleto;
+import com.iau.projeto.domain.PagamentoComCartao;
+import com.iau.projeto.domain.Pedido;
 import com.iau.projeto.domain.Produto;
+import com.iau.projeto.domain.enums.EstadoPagamento;
 import com.iau.projeto.domain.enums.TipoCliente;
 import com.iau.projeto.repositories.CategoriaRepository;
 import com.iau.projeto.repositories.CidadeRepository;
 import com.iau.projeto.repositories.ClienteRepository;
 import com.iau.projeto.repositories.EnderecoRepository;
 import com.iau.projeto.repositories.EstadoRepository;
+import com.iau.projeto.repositories.PagamentoRepository;
+import com.iau.projeto.repositories.PedidoRepository;
 import com.iau.projeto.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -43,6 +51,12 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 	@Autowired
 	private EnderecoRepository endereco_repository;
 	
+	@Autowired
+	private PedidoRepository pedido_repository;
+	
+	@Autowired
+	private PagamentoRepository pagamento_repository;
+	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetoSprigApplication.class, args);
@@ -50,6 +64,9 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		//AUX
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
 		//Objetos Categoria
 		Categoria cat_1 = new Categoria(null, "Informatica");
@@ -77,6 +94,16 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "58036460", cliente_1, c1);
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "58036510", cliente_1, c2);
 		
+		//Objeto Pedido
+		Pedido pedido_1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cliente_1, e1);
+		Pedido pedido_2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cliente_1, e2);
+		
+		//Objeto Pagamento
+		Pagamento pagamento_1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido_1, 6);
+		pedido_1.setPagamento(pagamento_1);
+		Pagamento pagamento_2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido_2, sdf.parse("20/10/2017 00:00"), null);
+		pedido_2.setPagamento(pagamento_2);
+		
 		//Associaçao
 		cat_1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		cat_2.getProdutos().addAll(Arrays.asList(p2));
@@ -88,7 +115,9 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		estado_1.getCidades().addAll(Arrays.asList(c1));
 		estado_2.getCidades().addAll(Arrays.asList(c2, c3));
 		
-		cliente_1.getEnderecos().addAll(Arrays.asList(e1, e2));	
+		cliente_1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		cliente_1.getPedidos().addAll(Arrays.asList(pedido_1, pedido_2));
+		
 		
 		//Salvar objetos no banco de dados
 		categoria_repository.saveAll(Arrays.asList(cat_1, cat_2));
@@ -97,6 +126,9 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		cidade_repository.saveAll(Arrays.asList(c1, c2, c3));
 		cliente_repository.saveAll(Arrays.asList(cliente_1));
 		endereco_repository.saveAll(Arrays.asList(e1, e2));
+		pedido_repository.saveAll(Arrays.asList(pedido_1, pedido_2));
+		pagamento_repository.saveAll(Arrays.asList(pagamento_1, pagamento_2));
+		
 	}
 
 }
