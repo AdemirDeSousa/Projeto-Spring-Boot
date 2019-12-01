@@ -77,6 +77,12 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		//Objetos Categoria
 		Categoria cat_1 = new Categoria(null, "Informatica");
 		Categoria cat_2 = new Categoria(null, "Escritorio");
+		Categoria cat_3 = new Categoria(null, "Cama mesa e banho");
+		Categoria cat_4 = new Categoria(null, "Eletronicos");
+		Categoria cat_5 = new Categoria(null, "Jardinagem");
+		Categoria cat_6 = new Categoria(null, "Decoraçao");
+		Categoria cat_7 = new Categoria(null, "Perfumaria");
+		Categoria cat_8 = new Categoria(null, "Comidas");
 		
 		//Objetos Produto
 		Produto p1 = new Produto (null, "Computador", 2000.00);
@@ -137,7 +143,7 @@ public class ProjetoSprigApplication implements CommandLineRunner{
 		p3.getItens().addAll(Arrays.asList(ip_2));
 		
 		//Salvar objetos no banco de dados
-		categoria_repository.saveAll(Arrays.asList(cat_1, cat_2));
+		categoria_repository.saveAll(Arrays.asList(cat_1, cat_2, cat_3, cat_4, cat_5, cat_6, cat_7, cat_8));
 		produto_repository.saveAll(Arrays.asList(p1, p2, p3));
 		estado_repository.saveAll(Arrays.asList(estado_1, estado_2));
 		cidade_repository.saveAll(Arrays.asList(c1, c2, c3));

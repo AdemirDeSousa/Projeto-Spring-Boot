@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -61,6 +63,13 @@ public class CategoriaResource {
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		List<Categoria> lista = categoria_service.findAll();
 		List<CategoriaDTO> listaDTO = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listaDTO);	
+	}
+	
+	@RequestMapping(value = "/pagina", method = RequestMethod.GET)
+	public ResponseEntity<Page<CategoriaDTO>> findPage(@RequestParam(value = "pagina", defaultValue = "0") Integer pagina, @RequestParam(value = "linhas_por_pagina", defaultValue = "24") Integer linhas_por_pagina, @RequestParam(value = "ordenar_por", defaultValue = "nome") String ordenar_por, @RequestParam(value = "direcao", defaultValue = "ASC") String direcao) {
+		Page<Categoria> lista = categoria_service.findPage(pagina, linhas_por_pagina, ordenar_por, direcao);
+		Page<CategoriaDTO> listaDTO = lista.map(obj -> new CategoriaDTO(obj));
 		return ResponseEntity.ok().body(listaDTO);	
 	}
 	
