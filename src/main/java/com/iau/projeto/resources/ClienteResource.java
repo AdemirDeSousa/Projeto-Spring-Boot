@@ -1,5 +1,6 @@
 package com.iau.projeto.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.iau.projeto.domain.Cliente;
 import com.iau.projeto.dto.ClienteDTO;
+import com.iau.projeto.dto.ClienteNewDTO;
 import com.iau.projeto.services.ClienteService;
 
 @RestController	
@@ -35,6 +38,16 @@ public class ClienteResource {
 		
 		return ResponseEntity.ok().body(obj);
 		
+	}
+	
+	//Metodo Inserir
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO){
+		Cliente obj = cliente_service.fromDTO(objDTO);
+		
+		obj = cliente_service.insert(obj);
+		URI uri =  ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 	
 	//Metodo Update
