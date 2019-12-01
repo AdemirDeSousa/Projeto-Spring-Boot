@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.iau.projeto.domain.Categoria;
+import com.iau.projeto.dto.CategoriaDTO;
 import com.iau.projeto.repositories.CategoriaRepository;
 import com.iau.projeto.services.exceptions.DataIntegrityException;
 import com.iau.projeto.services.exceptions.ObjectNotFoundException;
@@ -59,9 +60,14 @@ public class CategoriaService {
 		return categoria_repository.findAll();
 	}
 	
+	//Metodo para Exibir as Categorias por paginaçao
 	public Page<Categoria> findPage(Integer pagina, Integer linhas_por_pagina, String ordenar_por, String direcao){
 		PageRequest pageRequest = PageRequest.of(pagina, linhas_por_pagina, Direction.valueOf(direcao), ordenar_por);
-		return categoria_repository.findAll(pageRequest);
-		
+		return categoria_repository.findAll(pageRequest);	
+	}
+	
+	//Metodo para transformar objeto Categoria
+	public Categoria fromDTO(CategoriaDTO objDTO) {
+		return new Categoria(objDTO.getId(), objDTO.getNome());
 	}
 }
