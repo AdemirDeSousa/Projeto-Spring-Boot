@@ -39,8 +39,9 @@ public class CategoriaService {
 	
 	//Metodo Atualizar
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return categoria_repository.save(obj);
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return categoria_repository.save(newObj);
 	}
 	
 	//Metodo Deletar
@@ -69,5 +70,10 @@ public class CategoriaService {
 	//Metodo para transformar objeto Categoria
 	public Categoria fromDTO(CategoriaDTO objDTO) {
 		return new Categoria(objDTO.getId(), objDTO.getNome());
+	}
+	
+	//Metodo de ajuda para o metodo Atualizar
+	private void updateData(Categoria newObj, Categoria obj){
+		newObj.setNome(obj.getNome());	
 	}
 }

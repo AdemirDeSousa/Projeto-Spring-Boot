@@ -66,11 +66,10 @@ public class ClienteService {
 		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
 	}
 	
-	//Metodo 
+	//Metodo de ajuda para o metodo Atualizar
 	private void updateData(Cliente newObj, Cliente obj){
 		newObj.setNome(obj.getNome());
-		newObj.setEmail(obj.getEmail());
-		
+		newObj.setEmail(obj.getEmail());	
 	}
 	
 }
