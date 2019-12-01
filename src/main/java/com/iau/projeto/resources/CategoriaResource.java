@@ -1,6 +1,8 @@
 package com.iau.projeto.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.iau.projeto.domain.Categoria;
+import com.iau.projeto.dto.CategoriaDTO;
 import com.iau.projeto.services.CategoriaService;
 
 @RestController	
@@ -51,6 +54,14 @@ public class CategoriaResource {
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		categoria_service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	//Metodo Exibir Todos
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		List<Categoria> lista = categoria_service.findAll();
+		List<CategoriaDTO> listaDTO = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listaDTO);	
 	}
 	
 	
