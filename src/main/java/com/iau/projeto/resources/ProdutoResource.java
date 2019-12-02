@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iau.projeto.domain.Categoria;
 import com.iau.projeto.domain.Produto;
-import com.iau.projeto.dto.CategoriaDTO;
 import com.iau.projeto.dto.ProdutoDTO;
 import com.iau.projeto.resources.utils.URL;
 import com.iau.projeto.services.ProdutoService;
