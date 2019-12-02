@@ -105,7 +105,10 @@ public class ItemPedido implements Serializable{
 		return true;
 	}
 	
-	
+	//Metodo para calcular o valor total dos pedidos
+	public double getSubTotal() {
+		return (preco - desconto) * quantidade;
+	}
 	
 	
 }
