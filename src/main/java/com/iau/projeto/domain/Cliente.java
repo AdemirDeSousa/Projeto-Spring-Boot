@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.iau.projeto.domain.enums.Perfil;
 import com.iau.projeto.domain.enums.TipoCliente;
 
 @Entity
@@ -45,13 +48,17 @@ public class Cliente implements Serializable{
 	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name = "PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
 	//Construtor Vazio----------------------------------------------------------------
 	public Cliente() {
-		
+		addPerfil(Perfil.CLIENTE);
 	}
 	
 	//Contrutor com atributos---------------------------------------------------------
@@ -63,6 +70,7 @@ public class Cliente implements Serializable{
 		this.cpf_ou_cnjp = cpf_ou_cnjp;
 		this.tipo_cliente = (tipo_cliente == null) ? null : tipo_cliente.getCodigo();
 		this.senha = senha;
+		addPerfil(Perfil.CLIENTE);
 	}
 	
 	//Getters e Setters---------------------------------------------------------------
@@ -136,6 +144,15 @@ public class Cliente implements Serializable{
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public Set<Perfil> getPerfis(){
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+	
+	//Metodo para adicionar perfil ao cliente
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCodigo());
 	}
 	
 	//HashCode------------------------------------------------------------------------

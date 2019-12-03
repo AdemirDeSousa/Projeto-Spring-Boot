@@ -20,6 +20,7 @@ import com.iau.projeto.domain.PagamentoComCartao;
 import com.iau.projeto.domain.Pedido;
 import com.iau.projeto.domain.Produto;
 import com.iau.projeto.domain.enums.EstadoPagamento;
+import com.iau.projeto.domain.enums.Perfil;
 import com.iau.projeto.domain.enums.TipoCliente;
 import com.iau.projeto.repositories.CategoriaRepository;
 import com.iau.projeto.repositories.CidadeRepository;
@@ -102,12 +103,17 @@ public class DBService {
 				Cidade c3 = new Cidade(null, "Campinas", estado_2);
 				
 				//Objetos Cliente
-				Cliente cliente_1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "11111111111", TipoCliente.PESSOAFISICA, encoder.encode("123"));
+				Cliente cliente_1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "02979740098", TipoCliente.PESSOAFISICA, encoder.encode("123"));
 				cliente_1.getTelefones().addAll(Arrays.asList("999999999", "988888888"));
+				
+				Cliente cliente_2 = new Cliente(null, "Pedro Álvares Cabral", "PedroAlvaresCabral@gmail.com", "28202878080", TipoCliente.PESSOAFISICA, encoder.encode("123"));
+				cliente_2.addPerfil(Perfil.ADEMIR);
+				cliente_2.getTelefones().addAll(Arrays.asList("919812921", "128218282"));
 				
 				//Objeto Endereço
 				Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "58036460", cliente_1, c1);
 				Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "58036510", cliente_1, c2);
+				Endereco e3 = new Endereco(null, "Castelo de Belmonte", "001", null, "Beira Baixa", "58036511", cliente_2, c2);
 				
 				//Objeto Pedido
 				Pedido pedido_1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cliente_1, e1);
@@ -149,6 +155,8 @@ public class DBService {
 				estado_2.getCidades().addAll(Arrays.asList(c2, c3));
 				
 				cliente_1.getEnderecos().addAll(Arrays.asList(e1, e2));
+				cliente_2.getEnderecos().addAll(Arrays.asList(e3));
+				
 				cliente_1.getPedidos().addAll(Arrays.asList(pedido_1, pedido_2));
 				
 				pedido_1.getItens().addAll(Arrays.asList(ip_1, ip_2));
@@ -163,8 +171,8 @@ public class DBService {
 				produto_repository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 				estado_repository.saveAll(Arrays.asList(estado_1, estado_2));
 				cidade_repository.saveAll(Arrays.asList(c1, c2, c3));
-				cliente_repository.saveAll(Arrays.asList(cliente_1));
-				endereco_repository.saveAll(Arrays.asList(e1, e2));
+				cliente_repository.saveAll(Arrays.asList(cliente_1, cliente_2));
+				endereco_repository.saveAll(Arrays.asList(e1, e2, e3));
 				pedido_repository.saveAll(Arrays.asList(pedido_1, pedido_2));
 				pagamento_repository.saveAll(Arrays.asList(pagamento_1, pagamento_2));
 				itemPedido_repository.saveAll(Arrays.asList(ip_1, ip_2, ip_3));
