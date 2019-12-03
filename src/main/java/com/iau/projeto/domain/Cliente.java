@@ -34,6 +34,9 @@ public class Cliente implements Serializable{
 	private String cpf_ou_cnjp;
 	private Integer tipo_cliente;
 	
+	@JsonIgnore
+	private String senha;
+	
 	//Associação----------------------------------------------------------------------
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
@@ -52,13 +55,14 @@ public class Cliente implements Serializable{
 	}
 	
 	//Contrutor com atributos---------------------------------------------------------
-	public Cliente(Integer id, String nome, String email, String cpf_ou_cnjp, TipoCliente tipo_cliente) {
+	public Cliente(Integer id, String nome, String email, String cpf_ou_cnjp, TipoCliente tipo_cliente, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpf_ou_cnjp = cpf_ou_cnjp;
 		this.tipo_cliente = (tipo_cliente == null) ? null : tipo_cliente.getCodigo();
+		this.senha = senha;
 	}
 	
 	//Getters e Setters---------------------------------------------------------------
@@ -126,6 +130,14 @@ public class Cliente implements Serializable{
 		this.pedidos = pedidos;
 	}
 	
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
 	//HashCode------------------------------------------------------------------------
 	@Override
 	public int hashCode() {
@@ -152,6 +164,8 @@ public class Cliente implements Serializable{
 			return false;
 		return true;
 	}
+
+
 
 
 	

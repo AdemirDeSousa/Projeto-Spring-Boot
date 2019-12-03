@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,9 @@ public class ClienteService {
 	
 	@Autowired
 	private EnderecoRepository endereco_repository;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 	
 	//Metodo Buscar
 	public Cliente find(Integer id) {
@@ -83,12 +87,12 @@ public class ClienteService {
 	
 	//Metodo para transformar objeto Cliente
 	public Cliente fromDTO(ClienteDTO objDTO) {
-		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
+		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
 	}
 	
 	//Metodo para transformar objeto Cliente pelo ClienteNewDTO
 	public Cliente fromDTO(ClienteNewDTO objDTO) {
-		Cliente cliente = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpf_ou_cnjp(), TipoCliente.toEnum(objDTO.getTipo_cliente()));
+		Cliente cliente = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpf_ou_cnjp(), TipoCliente.toEnum(objDTO.getTipo_cliente()), encoder.encode(objDTO.getSenha()));
 		Cidade cidade = new Cidade(objDTO.getCidade_id(), null, null);
 		Endereco endereco = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cliente, cidade);
 		cliente.getEnderecos().add(endereco);
