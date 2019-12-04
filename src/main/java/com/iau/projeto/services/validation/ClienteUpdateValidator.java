@@ -12,12 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 
 import com.iau.projeto.domain.Cliente;
-import com.iau.projeto.domain.enums.TipoCliente;
 import com.iau.projeto.dto.ClienteDTO;
-import com.iau.projeto.dto.ClienteNewDTO;
 import com.iau.projeto.repositories.ClienteRepository;
 import com.iau.projeto.resources.exception.FieldMessage;
-import com.iau.projeto.services.validation.utils.BR;
 
 public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
 	
